@@ -2,7 +2,8 @@ inherit rust
 
 RDEPENDS_${PN} += "${RUSTLIB_DEP}"
 
-RUSTC_ARCHFLAGS += "-C opt-level=3 -g -L ${STAGING_DIR_HOST}/${rustlibdir}"
+RUSTLIBDIR_FLAGS ?= "-L ${STAGING_DIR_HOST}/${rustlibdir}"
+RUSTC_ARCHFLAGS += "-C opt-level=3 -g ${RUSTLIBDIR_FLAGS}"
 EXTRA_OEMAKE += 'RUSTC_ARCHFLAGS="${RUSTC_ARCHFLAGS}"'
 
 # Some libraries alias with the standard library but libstd is configured to

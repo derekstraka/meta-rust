@@ -2,8 +2,9 @@ inherit rust-vars
 
 RUSTC = "rustc"
 
+RUSTLIB = "-L ${STAGING_LIBDIR}/${TARGET_SYS}/rustlib/${TARGET_SYS}/lib"
 # FIXME: --sysroot might be needed
-RUSTFLAGS += "-C rpath -C crate_hash=${BB_TASKHASH}"
+RUSTFLAGS += "-C rpath -C crate_hash=${BB_TASKHASH} ${RUSTLIB}"
 RUSTC_ARCHFLAGS += "--target=${TARGET_SYS} ${RUSTFLAGS}"
 
 RUSTLIB_DEP ?= "rustlib"
