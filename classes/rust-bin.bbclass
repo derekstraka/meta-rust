@@ -54,22 +54,43 @@ get_overlap_externs () {
 do_configure () {
 }
 
-oe_compile_rust_lib () {
-    [ "${CRATE_TYPE}" == "dylib" ] && suffix=so || suffix=rlib
-    rm -rf ${LIBNAME}.{rlib,so}
+oe_compile_rust_lib_advanced () {
+    [ -n "$1" ] && crate_name="$1" || crate_name="${CRATE_NAME}"
+    shift
+    [ -n "$1" ] && libname="$1" || libname="${LIBNAME}"
+    shift
+    [ -n "$1" ] && libsrc="$1" || libsrc="${LIB_SRC}"
+    shift
+    [ -n "$1" ] && crate_type="$1" || crate_type="${CRATE_TYPE}"
+    shift
+
+    rm -rf $libname.{rlib,so}
     local -a link_args
-    if [ "${CRATE_TYPE}" == "dylib" ]; then
+    if [ "$crate_type" == "dylib" ]; then
         link_args[0]="-C"
-        link_args[1]="link-args=-Wl,-soname -Wl,${LIBNAME}.$suffix"
+        link_args[1]="link-args=-Wl,-soname -Wl,$libname.so"
     fi
+
+    if [ "$libname" != "lib$crate_name" ]; then
+	[ "$crate_type" == "dylib" ] && suffix=so || suffix=rlib
+    	output="-o $libname.$suffix"
+    else
+	output=""
+    fi
+
     oe_runrustc $(get_overlap_externs) \
         "${link_args[@]}" \
-        ${LIB_SRC} \
-        -o ${LIBNAME}.$suffix \
-        --crate-name=${CRATE_NAME} --crate-type=${CRATE_TYPE} \
+        $libsrc \
+        $output \
+        --crate-name=$crate_name --crate-type=$crate_type \
         "$@"
 }
 oe_compile_rust_lib[vardeps] += "get_overlap_externs"
+
+oe_compile_rust_lib () {
+    # For the simple cases we can use all defaults
+    oe_compile_rust_lib_advanced "" "" "" "" "${@}"
+}
 
 oe_compile_rust_bin () {
     rm -rf ${BINNAME}
