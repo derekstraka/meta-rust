@@ -2,10 +2,10 @@
 # clean it up after the install.
 
 rust_installer_do_install () {
-	rm ${D}/${libdir}/rustlib/install.log
-	rm ${D}/${libdir}/rustlib/rust-installer-version
-	rm ${D}/${libdir}/rustlib/uninstall.sh
-	rm ${D}/${libdir}/rustlib/components
+	rm -f ${D}/${libdir}/rustlib/install.log
+	rm -f ${D}/${libdir}/rustlib/rust-installer-version
+	rm -f ${D}/${libdir}/rustlib/uninstall.sh
+	rm -f ${D}/${libdir}/rustlib/components
 }
 
 do_install_append () {

@@ -114,4 +114,6 @@ do_install () {
 	oe_runmake DESTDIR="${D}" install
 }
 
+PROVIDES += "virtual/cargo"
+
 BBCLASSEXTEND = "native"

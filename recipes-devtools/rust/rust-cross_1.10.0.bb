@@ -13,9 +13,9 @@ INHIBIT_DEFAULT_RUST_DEPS = "1"
 # the bits we need explicitly.
 DEPENDS += "rust-llvm-native"
 DEPENDS += "virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}compilerlibs virtual/libc"
-DEPENDS += "rust-native"
+DEPENDS += "rust-native ${RUSTLIB_DEP}"
 
-PROVIDES = "virtual/${TARGET_PREFIX}rust"
+PROVIDES = "virtual/${TARGET_PREFIX}rustc"
 PN = "rust-cross-${TARGET_ARCH}"
 
 # In the cross compilation case, rustc doesn't seem to get the rpath quite
